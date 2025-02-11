@@ -1,29 +1,37 @@
 import { Injectable } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
-import { UpdateUserDto } from './dto/update-user.dto';
+import { InjectRepository } from '@nestjs/typeorm';
+import { User } from './entities/user.entity';
+import { Repository } from 'typeorm';
 
 @Injectable()
 export class UserService {
-  create(createUserDto: CreateUserDto) {
-    return 'This action adds a new user';
+  constructor(
+    @InjectRepository(User) private userRepository: Repository<User>,
+  ) {}
+
+  create(createUserDto: CreateUserDto): Promise<User> {
+    try {
+      const user = this.userRepository.create(createUserDto);
+      return this.userRepository.save(user);
+    } catch (error) {
+      throw new Error(`User with email: ${createUserDto.email} already exists`);
+    }
   }
 
-  findAll() {
-    return `This action returns all user`;
+  findAll(): Promise<User[]> {
+    try {
+      return this.userRepository.find();
+    } catch (error) {
+      throw new Error('No users found');
+    }
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} user`;
-  }
-
-  update(id: number, updateUserDto: UpdateUserDto) {
-    return `This action updates a #${id} user`;
-  }
-
-  findByEmail(email: string) {
-    const user = {
-      password: '1234',
-    };
-    return user;
+  findByEmail(email: string): Promise<User> {
+    try {
+      return this.userRepository.findOneByOrFail({ email });
+    } catch (error) {
+      throw new Error(`User with email: ${email} not found`);
+    }
   }
 }
