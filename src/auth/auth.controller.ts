@@ -1,26 +1,25 @@
-import { Controller, Post, Body, Request, UseGuards } from '@nestjs/common';
+import { Controller, Post, Body } from '@nestjs/common';
 import { AuthService } from './auth.service';
-import { LocalAuthGuard } from './local-auth.guard';
-import { JwtAuthGuard } from './jwt-auth.guard';
+import { CreateUserDto } from 'src/user/dto/create-user.dto';
+import { LoginDto } from './dto/auth.dto';
+import { ApiResponse, ApiTags } from '@nestjs/swagger';
 
 @Controller('auth')
+@ApiTags('auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
+  @ApiResponse({ status: 201, description: 'User logged in successfully' })
+  @ApiResponse({ status: 400, description: 'Bad request' })
   @Post('login')
-  @UseGuards(LocalAuthGuard)
-  async login(@Request() req) {
-    return this.authService.login(req.user);
+  async login(@Body() userData: LoginDto) {
+    return this.authService.login(userData);
   }
 
+  @ApiResponse({ status: 201, description: 'User registered successfully' })
+  @ApiResponse({ status: 400, description: 'Bad request' })
   @Post('register')
-  async register(@Body() createPersonDto) {
-    return this.authService.register(createPersonDto);
-  }
-
-  @UseGuards(JwtAuthGuard)
-  @Post('profile')
-  getProfile(@Request() req) {
-    return req.user;
+  async register(@Body() createUserDto: CreateUserDto) {
+    return this.authService.register(createUserDto);
   }
 }

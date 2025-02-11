@@ -4,11 +4,11 @@ import { AuthController } from './auth.controller';
 import { UserModule } from '../user/user.module';
 import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
-import { LocalStrategy } from './local.strategy';
-import { JwtStrategy } from './jwt.strategy';
-import { jwtConstants } from './constants';
-import { LocalAuthGuard } from './local-auth.guard';
-import { JwtAuthGuard } from './jwt-auth.guard';
+import { LocalStrategy } from 'src/guards/local.strategy';
+import { JwtStrategy } from 'src/guards/jwt.strategy';
+import { jwtConstants } from 'src/constants';
+import { LocalAuthGuard } from 'src/guards/local-auth.guard';
+import { JwtAuthGuard } from 'src/guards/jwt-auth.guard';
 
 @Module({
   imports: [

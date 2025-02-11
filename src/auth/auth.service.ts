@@ -1,7 +1,9 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
 import { UserService } from '../user/user.service';
+import { CreateUserDto } from 'src/user/dto/create-user.dto';
+import { LoginDto } from './dto/auth.dto';
 
 @Injectable()
 export class AuthService {
@@ -11,26 +13,36 @@ export class AuthService {
   ) {}
 
   async validateUser(email: string, pass: string): Promise<any> {
-    const user = this.userService.findByEmail(email);
-    if (user && (await bcrypt.compare(pass, user.password))) {
-      const { password, ...result } = user;
-      return result;
+    const user = await this.userService.findByEmail(email);
+    try {
+      if (user && (await bcrypt.compare(pass, user.password))) {
+        const { password, ...result } = user;
+        return result;
+      }
+    } catch (error) {
+      throw new Error('Error to validate user');
     }
-    return null;
   }
 
-  async login(person: any) {
-    const payload = { email: person.email, sub: person.id };
+  async login(userData: LoginDto) {
+    const user = await this.validateUser(userData.email, userData.password);
+
+    if (!user) {
+      throw new Error('Correo o contraseña incorrectos'); // Lanza un error si no es válido
+    }
+
+    const payload = { sub: user.id, email: user.email, roles: user.roles };
+
     return {
       access_token: this.jwtService.sign(payload),
     };
   }
 
-  async register(personData: any) {
+  async register(userData: CreateUserDto) {
     const salt = await bcrypt.genSalt();
-    const hashedPassword = await bcrypt.hash(personData.password, salt);
+    const hashedPassword = await bcrypt.hash(userData.password, salt);
     return this.userService.create({
-      ...personData,
+      ...userData,
       password: hashedPassword,
     });
   }
