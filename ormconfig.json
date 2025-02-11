@@ -1,0 +1,14 @@
+{
+  "type": "postgres",
+  "host": "localhost",
+  "port": 5432,
+  "username": "starwars",
+  "password": "starwars",
+  "database": "starwars",
+  "schema": "public",
+  "entities": ["dist/**/*.entity.js"],
+  "migrations": ["dist/migration/*.js"],
+  "cli": {
+    "migrationsDir": "src/migration"
+  }
+}
