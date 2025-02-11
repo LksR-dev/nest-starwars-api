@@ -15,7 +15,7 @@ import { FilmsModule } from './films/films.module';
       database: 'starwars',
       autoLoadEntities: true,
       entities: [__dirname + '/**/*.entity{.ts,.js}'],
-      synchronize: false,
+      synchronize: true,
     }),
     UserModule,
     AuthModule,

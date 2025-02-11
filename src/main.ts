@@ -1,6 +1,7 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
+import { RolesGuard } from './guards/roles.guard';
 
 async function bootstrap() {
   // CREATE APP AND CFG
