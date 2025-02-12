@@ -1,25 +1,49 @@
-import { Controller, Post, Body } from '@nestjs/common';
+import { Controller, Post, Body, BadRequestException } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { CreateUserDto } from 'src/user/dto/create-user.dto';
 import { LoginDto } from './dto/auth.dto';
-import { ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 
 @Controller('auth')
 @ApiTags('auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
-  @ApiResponse({ status: 201, description: 'User logged in successfully' })
-  @ApiResponse({ status: 400, description: 'Bad request' })
+  @ApiOperation({ summary: 'Login user' })
+  @ApiResponse({
+    status: 201,
+    description: 'User logged in successfully',
+    schema: {
+      example: {
+        access_token:
+          'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjIsImVtYWlsIjoibHVjYXMyQGdt...',
+      },
+    },
+  })
+  @ApiResponse({ status: 400, description: 'Incorrect email or password' })
   @Post('login')
   async login(@Body() userData: LoginDto) {
-    return this.authService.login(userData);
+    try {
+      return await this.authService.login(userData);
+    } catch (error) {
+      throw new BadRequestException(error.message);
+    }
   }
 
-  @ApiResponse({ status: 201, description: 'User registered successfully' })
-  @ApiResponse({ status: 400, description: 'Bad request' })
+  @ApiOperation({ summary: 'Register user' })
+  @ApiResponse({
+    status: 201,
+    description: 'User registered successfully',
+    type: CreateUserDto,
+  })
+  @ApiResponse({ status: 400, description: 'User already exists' })
+  @ApiBody({ type: CreateUserDto })
   @Post('register')
   async register(@Body() createUserDto: CreateUserDto) {
-    return this.authService.register(createUserDto);
+    try {
+      return await this.authService.register(createUserDto);
+    } catch (error) {
+      throw new BadRequestException(error.message);
+    }
   }
 }

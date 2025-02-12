@@ -27,7 +27,7 @@ export class AuthService {
     const user = await this.validateUser(userData.email, userData.password);
 
     if (!user) {
-      throw new Error('Incorrect email or password'); // Lanza un error si no es válido
+      throw new Error('Incorrect email or password');
     }
 
     const payload = { sub: user.id, email: user.email, roles: user.roles };

@@ -1,29 +1,28 @@
-import { IsString, IsNotEmpty } from 'class-validator';
+import { IsString, IsNotEmpty, IsDateString } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 
 export class CreateFilmDto {
-  @ApiProperty()
+  @ApiProperty({ example: 'A New Hope' })
   @IsNotEmpty()
   @IsString()
   title: string;
 
-  @ApiProperty()
-  @IsNotEmpty()
+  @ApiProperty({ example: 4, required: false })
   @IsString()
   episode_id: number;
 
-  @ApiProperty()
+  @ApiProperty({ example: 'It is a period of civil war...' })
   @IsNotEmpty()
   @IsString()
   description: string;
 
-  @ApiProperty()
+  @ApiProperty({ example: 'George Lucas' })
   @IsNotEmpty()
   @IsString()
   director: string;
 
-  @ApiProperty()
+  @ApiProperty({ example: '1977-05-25' })
   @IsNotEmpty()
-  @IsString()
+  @IsDateString()
   release_date: string;
 }

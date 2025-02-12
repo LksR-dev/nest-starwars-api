@@ -1,5 +1,5 @@
 import {
-  ForbiddenException,
+  HttpException,
   Injectable,
   Logger,
   NotFoundException,
@@ -66,7 +66,6 @@ export class FilmsService {
     if (!film) {
       throw new NotFoundException(`Film with ID ${id} not found`);
     }
-
     await this.filmRepository.remove(film);
   }
 
@@ -95,7 +94,11 @@ export class FilmsService {
         }
       }
     } catch (error) {
-      this.logger.error('Error to sincronized with SW', error.message);
+      this.logger.error('Error synchronizing with SWAPI', error.message);
+      throw new HttpException(
+        { message: 'Error synchronizing with SWAPI' },
+        500,
+      );
     }
   }
 }

@@ -4,6 +4,7 @@ import {
   IsEmail,
   IsNotEmpty,
   IsArray,
+  MaxLength,
 } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 
@@ -25,5 +26,6 @@ export class CreateUserDto {
 
   @ApiProperty({ default: ['regular', 'admin'] })
   @IsArray()
+  @MaxLength(1)
   readonly roles: string[];
 }
