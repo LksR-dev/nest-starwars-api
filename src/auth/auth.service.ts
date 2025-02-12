@@ -14,13 +14,12 @@ export class AuthService {
 
   async validateUser(email: string, pass: string): Promise<any> {
     const user = await this.userService.findByEmail(email);
-    try {
-      if (user && (await bcrypt.compare(pass, user.password))) {
-        const { password, ...result } = user;
-        return result;
-      }
-    } catch (error) {
-      throw new Error('Error to validate user');
+
+    if (user && (await bcrypt.compare(pass, user.password))) {
+      const { password, ...result } = user;
+      return result;
+    } else {
+      return null;
     }
   }
 
@@ -28,7 +27,7 @@ export class AuthService {
     const user = await this.validateUser(userData.email, userData.password);
 
     if (!user) {
-      throw new Error('Correo o contraseña incorrectos'); // Lanza un error si no es válido
+      throw new Error('Incorrect email or password'); // Lanza un error si no es válido
     }
 
     const payload = { sub: user.id, email: user.email, roles: user.roles };

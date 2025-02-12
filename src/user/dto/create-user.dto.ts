@@ -3,6 +3,7 @@ import {
   IsStrongPassword,
   IsEmail,
   IsNotEmpty,
+  IsArray,
 } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 
@@ -21,4 +22,8 @@ export class CreateUserDto {
   @IsStrongPassword()
   @IsNotEmpty()
   readonly password: string;
+
+  @ApiProperty({ default: ['regular', 'admin'] })
+  @IsArray()
+  readonly roles: string[];
 }

@@ -27,13 +27,13 @@ export class RolesGuard implements CanActivate {
 
     if (!user || !user.roles) {
       throw new ForbiddenException(
-        'Usuario no autenticado o sin roles definidos',
+        'User does not have the necessary roles to access this resource',
       );
     }
 
     if (!requiredRoles.some((role) => user.roles.includes(role))) {
       throw new ForbiddenException(
-        'Does not have the necessary roles to access this resource',
+        'User does not have the necessary roles to access this resource',
       );
     }
 
