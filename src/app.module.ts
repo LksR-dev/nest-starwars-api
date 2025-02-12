@@ -4,6 +4,7 @@ import { UserModule } from './user/user.module';
 import { AuthModule } from './auth/auth.module';
 import { FilmsModule } from './films/films.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import { config } from 'dotenv';
 
 @Module({
   imports: [
@@ -29,6 +30,10 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
             dropSchema: true,
             deleteSchema: true,
           }),
+          ssl:
+            configService.get<string>('DB_SSL') === 'true'
+              ? { rejectUnauthorized: false }
+              : false,
         };
       },
       inject: [ConfigService],
