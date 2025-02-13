@@ -114,7 +114,7 @@ export class FilmsController {
     return { message: 'Film deleted successfully' };
   }
 
-  @Get('/sync-swapi')
+  @Post('/sync')
   @ApiOperation({ summary: 'Sync with SWAPI' })
   @ApiOkResponse({
     description: 'Successfully sync',
@@ -123,7 +123,8 @@ export class FilmsController {
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles('admin')
   @ApiBearerAuth()
-  async syncSwapi(): Promise<void> {
-    return this.filmsService.syncFilmsWithSwapi();
+  async syncSwapi(): Promise<{ message: string }> {
+    this.filmsService.syncFilmsWithSwapi();
+    return { message: 'Successfully sync' };
   }
 }

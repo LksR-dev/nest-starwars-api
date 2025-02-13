@@ -60,7 +60,7 @@ El servidor estará corriendo en **http://localhost:3000**.
 La documentación se encuentra disponible en **Swagger** en la siguiente URL:
 
 ```
-http://localhost:3000/api
+https://nest-starwars-api.onrender.com/api#/
 ```
 
 ## 🧪 Pruebas End-to-End
@@ -71,30 +71,11 @@ Para ejecutar las pruebas E2E, asegúrate de que el servidor esté corriendo y l
  pnpm run test:e2e
 ```
 
-## 📤 Despliegue
+## 📤 URL Deployada
 
-Para desplegar el proyecto en un servidor, se recomienda:
-
-1. **Elegir un hosting con soporte para Node.js**, como:
-
-   - **Railway.app** (gratuito y fácil de usar)
-   - **Render.com**
-   - **Vercel (con adaptaciones)**
-   - **AWS, GCP o Heroku**
-
-2. Configurar las variables de entorno en el servidor.
-3. Instalar dependencias en producción:
-   ```bash
-   pnpm install --production
-   ```
-4. Ejecutar las migraciones en producción:
-   ```bash
-   pnpm run migration:run
-   ```
-5. Iniciar el servidor:
-   ```bash
-   pnpm run start:prod
-   ```
+```
+https://nest-starwars-api.onrender.com/
+```
 
 ## 📌 Tecnologías Utilizadas
 

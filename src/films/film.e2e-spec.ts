@@ -166,5 +166,24 @@ describe('Films (e2e)', () => {
         expect(response.body).toHaveProperty('message', 'Unauthorized');
       });
     });
+
+    describe('POST /films/sync - Sync with SWAPI', () => {
+      it('should synchronize with SWAPI with administrator credentials.', async () => {
+        const response = await request(app.getHttpServer())
+          .post('/films/sync')
+          .set('Authorization', `Bearer ${authTokenAdmin}`)
+          .expect(201);
+
+        expect(response.body).toHaveProperty('message', 'Successfully sync');
+      });
+
+      it('should refuse synchronization with SWAPI without authentication.', async () => {
+        const response = await request(app.getHttpServer())
+          .post('/films/sync')
+          .expect(401);
+
+        expect(response.body).toHaveProperty('message', 'Unauthorized');
+      });
+    });
   });
 });
